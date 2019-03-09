@@ -358,7 +358,7 @@ public class ProductService{
 
 [표 - 1 ] : type 속성에 따라 expressioin 속성표
 type 속성|설명
---------|----
+------|------
 annotation|클래스에 지정한 애노테이션이 적용됐는지 여부, expression 속성에는 "org.example.SomeAnnotation"와 같이 애노테이션 이름을 입력한다.
 assignable|클래스가 지정한 타입으로 할당 가능한지의 여부. expression 속성에는 "org.example.SomeClass"와 같이 타입 이름을 입력한다.
 regex|클래스 이름이 정규 표현식에 매칭되는지의 여부. expression 속성에는 "org\.example\.Deault.*"와 같이 정규 표현식을 입력한다.
