@@ -208,12 +208,12 @@ public abstract class ErpClientFactory {
 <!-- [xml-1] : 정적 메서드를 사용하여 빈 객체 생성 -->
 <bean id="factory" class="net.madvirus.spring4.chap02.erp.ErpClientFactory"
 		factory-method="instance">
-		<constructor-arg> <!-- static 메서드의 파라미터로 전달 -->
-			<props>
-				<prop key="server">10.50.0.101</prop>
-			</props>
-		</constructor-arg>
-	</bean>
+	<constructor-arg> <!-- static 메서드의 파라미터로 전달 -->
+		<props>
+			<prop key="server">10.50.0.101</prop>
+		</props>
+	</constructor-arg>
+</bean>
 ```
 
 [xml-1] 와 같이 factory-method 속성을 지정하면, 스프링은 ErpClientFactory 클래스의 생성자가 아닌 정적 메서드인 instance() 메서드를 이용해 빈 객체를 생성한다. 파라미터가 필요할 경우에는 <constructor-arg> 태그를 이용해서 필요한 값이나 빈 객체를 전달하면 된다.
@@ -235,13 +235,13 @@ public abstract class ErpClientFactory {
 // [코드-10] : 애노테이션을 이용한 객체 간 의존 자동 연결     
 public class OrderService {
   ...
-	@Autowired
+  @Autowired
   private ErpClientFactory erpClientFactory;
   
   @Autowired
-	public void init(ErpClientFactory erpClientFactory) {
+  public void init(ErpClientFactory erpClientFactory) {
     ...
-	}
+  }
   ...
 }
 ```
@@ -250,12 +250,12 @@ public class OrderService {
   <!-- [xml-2] : @Autowired 이용한 자동 연결 -->
   <bean id="factory" class="net.madvirus.spring4.chap02.erp.ErpClientFactory"
 		factory-method="instance">
-		<constructor-arg>
-			<props>
-				<prop key="server">10.50.0.101</prop>
-			</props>
-		</constructor-arg>
-	</bean>
+	<constructor-arg>
+		<props>
+			<prop key="server">10.50.0.101</prop>
+		</props>
+	</constructor-arg>
+</bean>
 ```
  [코드-10]과 [xml-2]처럼 설정하고 @Autowired 사용하면 스프링은 자동으로 빈 객체를 생성하여 연결해 준다. @Autowired는 필드, 메서드, 생성자 등에서 사용 가능하다. @Autowired 속성중에 required 속성이 있는데 이것은 주입 객체가 필수인지를 설정하는 속성(기본으로는 true)이다. 이 속성 값을 false로하면 객체가 정의되지 않아 생성하지 못하더라도 익셉션이 발생하지 않으며, 객체의 값이 null일 수도 있을 경우에 사용(@Autowired(required=false))한다. 
 
@@ -263,10 +263,10 @@ public class OrderService {
 // [코드-11] : 애노테이션을 이용한 객체 간 의존 자동 연결     
 public class OrderService {
   ...
-	@Autowired
-	public void setSearchClientFactory(@Qualifier("order") SearchClientFactory searchClientFactory) {
-		this.searchClientFactory = searchClientFactory;
-	}
+  @Autowired
+  public void setSearchClientFactory(@Qualifier("order") SearchClientFactory searchClientFactory) {
+	this.searchClientFactory = searchClientFactory;
+  }
   ...
 }
 ```
@@ -327,9 +327,9 @@ public void setClientFactory(@Named("orderSearchClientFactory") SearchClientFact
 
 - 6.1 자동 검색된 빈의 이름과 범위
 ```xml
-  <!-- [xml-5] : 패키지 경로에 객체들을 스캔(하위 패키지 포함)하여 스프링 빈으로 등록 및 각 빈 간의 의존을 처리 -->
-  <context:component-scan base-package="net.madvirus.spring4.chap02.shop">
-  </context:component-scan>
+<!-- [xml-5] : 패키지 경로에 객체들을 스캔(하위 패키지 포함)하여 스프링 빈으로 등록 및 각 빈 간의 의존을 처리 -->
+<context:component-scan base-package="net.madvirus.spring4.chap02.shop">
+</context:component-scan>
 ```
 
 [xml-5]에서와 같이 설정 파일에 <context:component-sca> 태그를 사용하여 스캔할 패키지 경로를 적어 준다. 그러면 스프링 컨테이너가 해당 경로에 하위 폴더까지 포함하여 모든 클래스들을 읽어 들여 @ 설정을 통해 스프링 빈으로 등록하고 각 빈 간의 의존을 처리한다.
@@ -360,5 +360,84 @@ public class ProductService{
 //TO-DO : type 속성에 따라 expressioin 속성표
 
 ## 7. 스프링 컨테이너 추가 설명
+: 지금까지는 ApplicationContext가 제공하는 메서드 중에 getBean() 메서드만 주로 사용했는데, 여기서는 getBean() 메서드를 포함해서 ApplicationContext가 제공하는 기능 및 스프링 컨테이넝 대한 추가적인 내용을 설명한다.
+
+- 7.1 컨테이너 빈 객체 구하기 위한 기본 메서드
+  + BeanFactory
+  
+    * <T> T getBean(String name, Class<T> requiredType)
+      : 이름이 name이고, 타입이 requiredType인 빈을 구한다. 일치하는 빈이 존재하지 않을 경우 NoSuchBeanDefinitionException이 발생한다.
+    * <T> T getBean(Class<T> rquiredType)
+      : 타입이 requiredType인 빈을 구한다. 일치하는 타입을 가진 빈이 존재하지 않을 경우 NoSuchBeanDefinitionException이 발생하고, 같은 타입의 빈이 두 개 이상일 경우 NoUniqueBeanDefinitionException이 발생한다.
+    * boolean containsBean(String name)
+      : 지정한 이름을 가진 빈이 존재할 경우 true를 리턴한다.
+    * boolean isTypeMatch(String name, Class<?> targetType)
+      : 지정한 이름을 가진 빈의 타입이 targetType인 경우 true를 리턴한다. 해당 이름을 가진 빈이 존재하지 않을 경우 NoSuchBeanDefinitionException이 발생한다.
+    = Class<?> getType(String name) 
+      : 이름 name인 빈의 타이블 구한다. 해당 이름을 가진 빈이 존재하지 않을 경우 NoSuchBeanDefinitionExcption이 발생한다.
+
+- 7.2 스프링 컨테이너의 생성과 종료
+: 스프링 컨테이너는 주기를 갖는다.
+
+1. 컨테이너 생성
+2. 빈 메타 정보(XML이나 자바 기반 설정)를 이용해서 빈 객체 생성
+3. 컨테이너 사용
+4. 컨테이너 종료(빈 객체가 제거)
+
+1번과 2번 과정은 컨테이너를 생성할 때 함께 진행된다.
+```java
+// [코드-15] : 메타 정보(xml)를 읽어 빈 객체 생성하여 스프링 컨테이너 생성
+GenericXmlApplicationContext ctx = new GenericXmlApplicationContext("classpath:config.xml");
+```
+또는 컨테이너를 먼저 생성 후 메타 정보를 컨테이너에게 제공할 수도 있다.
+```java
+// [코드-16] : 스프링 컨테이너 생성 후 메타 정보를 제공
+// 스프링 컨테이너 생성
+GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
+// 메타 정보 제공 
+ctx.load("classpath:config.xml");
+// 빈 객체 생성(읽어 온 메타 정보로 빈 객체재생성)
+ctx.refresh();
+// 컨테이너 종료
+ctx.close();
+```
+컨테이너를 생성 후 메타정를 제공할 때 refresh() 메서드를 호출하여 빈 객체를 초기화해야만 익셉션을 방지할 수 있다.
+
+- 7.3 스프링 컨테이너 계층 구조
+: 스프링 컨테이너는 부모-자식 관계의 계층 구조를 가질 수 있다. 
+자식에 속하는 컨테이너 빈은 부모 컨테이너에 속한 빈을 참조할 수 있다. 즉, 의존 객체로 사용할 수 있다. 하지만 부모 컨테이너에 속한 빈은 자식 컨테이너에 속한 빈을 참조할 수 없다.
+
+```java
+// [코드-17] : 부모-자식 관계 설정
+GenericXmlApplicationContext parent = new GenericXmlApplicationContext("classpath:parent-xml");
+GenericXmlApplicationContext child = new GenericXmlApplicationContext();
+child.setParent(parent);
+child.load("classpath:child-xml");
+child.refresh();
+```
+
+```xml
+<!-- [xml-7] : 부모-자식 관계 
+-- conf-parent.xml
+<bean id="svc" class="net.some.svc.Svc">
+</bean>
+
+-- conf-child.xml
+<bean id="ui" class="net.some.ui.UI">
+	<property name="service" ref="svc"/> <!-- 부모 컨테이너의 svc 빈을 참조 -->
+</bean>
+```
+[코드-17]에서는 setParent() 메서드를 이용하여 부모-자식 관계를 설정하였다. 여기서 자식 컨테이너의 빈을 초기화하기 전에 부모 컨테이너를 지정해야만 익셉션을 방지할 수 있다. 
+부모-자식 관계 설정은 일반적으로 컨테이너 계층 구조를 사용할 일이 많지 않지만, 서로 다른 두 개의 컨테이너에서 공통 기능을 필요로 할 때 계층 구조를 유용하게 쓸 수 있다. 예를 들어, 메일 발송, 메시지 전송 등의 공통 기능을 제공하는 빈을 부모 컨테이너에 생성하고, 여러 자식 컨테이너에서 이들 빈을 사용해서 기능을 사용할도록 구성할 수 있을 것이다.
+
+
+
+
+
+
+
+
+
+
 
 
