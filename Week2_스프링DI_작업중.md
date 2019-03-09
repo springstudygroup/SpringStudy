@@ -1,6 +1,6 @@
 스프링 DI를 이용한 객체 생성
 =======================
-## DI(Dependency Injection)와 스프링
+## 1. DI(Dependency Injection)와 스프링
 설명 : 
 - 1.1 DI(Dependency Injection) : 의존성 주입
 
@@ -93,7 +93,7 @@ public class FilePrinter{
     
     public Assembler(){
       enc = new Encryptor();
-      fileEnc = enw FileEncryptor(enc); // 사용할 객체를 생성 
+      fileEnc = new FileEncryptor(enc); // 사용할 객체를 생성 
     }
     
     // 필요한 객체를 전달하기 위한 메서드
@@ -146,17 +146,43 @@ public class FilePrinter{
   }
   ```
 - 1.5 스프링은 객체를 생성하고 연결해주는 DI 컨테이너
+: 스프링은 객체를 생성하고 각 객체를 연결해주는 조립기 역할을 한다.
+```java
+String configLocation = "classpath:applicationContext.xml";
+AbstractApplicationContext ctx = new GenericXmlApplicationContext(configLocation);
+Project project = ctx.getBean("sampleProject", Project.class);
+project.build();
+ctx.close();
+```
+
+여기서 GenericXmlApplicationContext가 조립기 기능을 구현한 클래ㅅ다. 조립기에서 생성할 객체가 무엇이고, 각 객체를 어떻게 연결하는지에 대한 정보는 XML 파일에 정의 되어 있다. GenericXmlApplicationContext 클래스는 이 XML 파일에 정의된 설정 정보를 읽어와 객체를 생성하고 각각의 객체를 연결한 뒤에 내부적으로 보관하는데, 이러한 생성된 객체를 보관하는 것을 스프링 객체 컨테이너(Object Container) 라고 부른다.
 
 
-## 스프링 컨테이너 종류
+## 2. 스프링 컨테이너 종류
+: 스프링은 컨테이너는 두 가지 종류의 컨테이너를 제공한다. 
 
-## 스프링 DI 설정
 
-## 팩토리 방식의 스프링 빈 설정
+- BeanFactory : 컨테이너에서 객체를 생성하고 DI를 처리해주는 기능만 제공
+- ApplicationContext : 트랜잭션, 자바 코드 기반 스프링 설정, 애노테이션을 사용한 빈 설정, 스프링을 이용한 웹 개발, 메시지 처리 등 기능을 제공
 
-## 애노테이션을 이용한 객체 간 의존 자동 연결
+여기서 살펴볼 스프링 컨테이너는 ApplicationContext 인터페이스를 구현한 클래스를 살펴 본다.
+  + GenericXmlApplicationContext : XML 파일을 설정 정보로 사용하는 스프링 컨테이너. 독립형 어플리케이션 개발에 사용
+  + AnnotationConfigApplicationContext : 자바 코드를 설정 정보로 사용하는 스프링 컨테이너. 독립형 어플리케이션 개발에 사용
+  + GenericGroovyApplicationContext : 그루비 언어로 작성된 설정 정보를 사용하는 스프링 컨테이너. 독립형 어플리케이션 개발에 사용
+  + XmlWebApplicationContext : 웹 어플리케이션을 개발할 때 사용하는 스프링 컨테이너. XML 파일을 설정 정보로 사용
+  + AnnotationConfigWebApplicationContext : 웹 어플리케이션을 개발 할 때 사용하는 스프링 컨테이너. 자바 코드를 설정 정보로 사용
 
-## 컴포넌트 스캔을 이용한 빈 자동 등록
+## 3. 스프링 DI 설정
+-  
 
-## 스프링 컨테이너 추가 설명
+
+## 4. 팩토리 방식의 스프링 빈 설정
+- 4.1 객체 생성을 위한 정적 메서드 설정 
+
+
+## 5. 애노테이션을 이용한 객체 간 의존 자동 연결
+
+## 6. 컴포넌트 스캔을 이용한 빈 자동 등록
+
+## 7. 스프링 컨테이너 추가 설명
 
