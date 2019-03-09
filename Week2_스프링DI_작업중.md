@@ -1,11 +1,10 @@
 스프링 DI를 이용한 객체 생성
 =======================
 ## 1. DI(Dependency Injection)와 스프링
-설명 : 
-- 1.1 DI(Dependency Injection) : 의존성 주입
-
 : 객체 자체가 아니라 Framework 의해 객체의 의존성이 주입되는 설계 패턴을 말한다.
 객체가 어떤 의존성을 가지고 있으며, 어떡해 주입이 되는지 아래에 예제 코드를 보자.
+
+- 1.1 DI(Dependency Injection) : 의존성 주입
 
 ```java
 // [코드-1] : FilePrinter 객체는 BufferedReader 객체를 의존한다.
@@ -226,10 +225,10 @@ public abstract class ErpClientFactory {
 : 스프링은 개발자가 일일이 의존 정보를 설정하지 않아도(예륻들어, XML에서 <ref> 태그를 사용하지 않아도) 자동으로 스프링 빈 객체 간의 의존을 설정해주는 기능을 제공하고 있는데, 이 기능을 사용하면 스프링 코드 설정을 짧게 유지할 수 있게 된다. 의존 자동 설정을 위해서 자주 사용되는 애노테이션을 살펴 본다.
   
   - 5.1 애노테이션 기반 의존 자동 연결 위한 설정
-    + @Autowired : o.s.beans.factory.annotation.Autowried 애노테이션은 의존 관계를 자동으로 설정
+    + @Autowired : 의존 관계를 자동으로 설정
     + @Qualifiler : 두 개 이상의 동일한 빈 객체가 정의되어 생성될 경우 한정하여 연결해줄 객체를 생성하기 위한 설정
-    + @Inject : 
-    + @Resource : 이름을 기준으로 빈 객체를 자동으로 
+    + @Inject : DI 목적으로 만들어진 애노테이션 
+    + @Resource : 이름을 기준으로 빈 객체를 자동으로 설정
     
     
 ```java
@@ -261,7 +260,7 @@ public class OrderService {
  [코드-10]과 [xml-2]처럼 설정하고 @Autowired 사용하면 스프링은 자동으로 빈 객체를 생성하여 연결해 준다. @Autowired는 필드, 메서드, 생성자 등에서 사용 가능하다. @Autowired 속성중에 required 속성이 있는데 이것은 주입 객체가 필수인지를 설정하는 속성(기본으로는 true)이다. 이 속성 값을 false로하면 객체가 정의되지 않아 생성하지 못하더라도 익셉션이 발생하지 않으며, 객체의 값이 null일 수도 있을 경우에 사용(@Autowired(required=false))한다. 
 
 ```java
-// [코드-10] : 애노테이션을 이용한 객체 간 의존 자동 연결     
+// [코드-11] : 애노테이션을 이용한 객체 간 의존 자동 연결     
 public class OrderService {
   ...
 	@Autowired
@@ -272,39 +271,94 @@ public class OrderService {
 }
 ```
 ```xml
-  <!-- [xml-3] : @Autowired 이용한 자동 연결 -->
+  <!-- [xml-3] : @Qualifier 이용한 자동 연결 -->
   <bean id="factory" class="net.madvirus.spring4.chap02.search.SearchClientFactoryBean">
     <qualifier value="order"/>
     ...
-	</bean>
+  </bean>
 ```
  
 @Qualifiler 애노테이션은 빈을 정의할 때 빈의 한정하여 사용하도록 설정하는 기능이다. XML 설정에서 <qualifier> 태그를 이용해 한정자를 지정하여 사용한다.
   
-  
-
 ```java
-// [코드-10] : 애노테이션을 이용한 객체 간 의존 자동 연결     
-public class OrderService {
-  ...
-	@Autowired
-	public void setSearchClientFactory(@Qualifier("order") SearchClientFactory searchClientFactory) {
+// [코드-12] : 애노테이션을 이용한 객체 간 의존 자동 연결     
+@Component
+public class ProductService {
+	...
+	@Resource(name = "productSearchClientFactory")
+	public void setSearchClientFactory(SearchClientFactory searchClientFactory) {
 		this.searchClientFactory = searchClientFactory;
 	}
-  ...
+	...
 }
+
 ```
 ```xml
-  <!-- [xml-3] : @Autowired 이용한 자동 연결 -->
-  <bean id="factory" class="net.madvirus.spring4.chap02.search.SearchClientFactoryBean">
-    <qualifier value="order"/>
-    ...
-	</bean>
+  <!-- [xml-4] : @Resource 이용한 자동 연결 -->
+ <bean id="productSearchClientFactory"
+		class="net.madvirus.spring4.chap02.search.SearchClientFactoryBean">
+	<property name="server" value="10.20.30.41" />
+	<property name="port" value="9999" />
+	<property name="contentType" value="json" />
+ </bean>
+
 ```  
  
+@Resource 애노테이션은 이름을 기준으로 빈 객체를 선택하여 자동으로 설정 해준다. [xml-4]에 name 속성 값을 [코드-12]에서 @Resource 애노테이션의 속성 값으로 사용한다. @Resource 애노테이션은 name 속성으로 정의된 객체가 없거나 두 개 이상이면 익셉션을 발생시키며, name 속성을 지정하지 않을 경우에는 @Autowired 애노테이션 기능과 동일하게 일치하는 타입으로 스프링 빈을 선택하여 설정 해준다.
+
+```java
+// [코드-13] : 애노테이션을 이용한 객체 간 의존 자동 연결     
+@Inject
+public void setErpClientFactory(ErpClientFactory erpClientFactory) {
+	this.erpClientFactory = erpClientFactory;
+}
+
+@Inject
+public void setClientFactory(@Named("orderSearchClientFactory") SearchClientFactory searchClientFactory){
+	this.searchClientFactory = searchClientFactory;
+}
+```
+@Inject 애노테이션은 @Autowired 애노테이션과 마찬가지로 필드, 메서드, 생성자에 적용할 수 있다.
+[코드-13] 두 번째 @Inject 애노테이션의 적용된 메서드의 파라미터에 @Named 애노테이션을 적용했다. @Named 애노테이션은 자동 설정 대상이 두 개 이상일 경우 특정한 빈을 선택할 목적으로 사용된다는 점에서 @Qualifier 애노테이션과 유사하다. 차이점은 @Named 애노테이션은 사용할 빈의 이름을 지정한다는 점이다.
 
     
 ## 6. 컴포넌트 스캔을 이용한 빈 자동 등록
+: 특정 패키지에 위치한 클래스를 스프링 빈으로 자동으로 등록하고 의존 자동 설정을 통해서 각 빈 간의 의존을 처리해 주는 기능을 컴포넌트 스캔이라 한다.
+
+- 6.1 자동 검색된 빈의 이름과 범위
+```xml
+  <!-- [xml-5] : 패키지 경로에 객체들을 스캔(하위 패키지 포함)하여 스프링 빈으로 등록 및 각 빈 간의 의존을 처리 -->
+  <context:component-scan base-package="net.madvirus.spring4.chap02.shop">
+  </context:component-scan>
+```
+
+[xml-5]에서와 같이 설정 파일에 <context:component-sca> 태그를 사용하여 스캔할 패키지 경로를 적어 준다. 그러면 스프링 컨테이너가 해당 경로에 하위 폴더까지 포함하여 모든 클래스들을 읽어 들여 @ 설정을 통해 스프링 빈으로 등록하고 각 빈 간의 의존을 처리한다.
+스프링은 기본적으로 검색된 클래스를 빈으로 등록할 때, 클래스의(첫 글자를 소문자로 바꾼) 이름을 빈 이름으로 사용한다.
+
+```java
+// [코드-14] : ProductService는 @Component 애노테이션 설정으로 스프링 빈 대상이므로, 컴포넌트 스캔 시 빈 이름을 productService로 지정 된다.
+@Component
+public class ProductService{
+...
+}
+```
+
+- 6.2 스캔 대상 클래스 범위 지정하기
+: <context:component-scan> 태그를 사용할 때, 스캔 대상에 포함시킬 클래스와 제외시킬 클래스를 구체적으로 명시할 수 있다.
+
+```xml
+<!-- [xml-6] : 스캔 시 클래스 포함 설정 -->
+<context:component-scan base-package="net.madvirus.spring4.chap02.shop">
+	<context:include-filter type="regex" expression="*.Service"/>
+	<context:exclude-filter type="aspectj" expression="net..*Dao"/>
+</context:component-scan>
+```
+
+[xml-6]에서 컴포넌트 스캔 시 포함할 클래스가 있다면 <context:include-filter>를 사용하고, 제외할 클래스가 있다면 <context:exclude-filter>를 사용한다.
+이 두 개의 태그는 type 속성에 따라 expressioin 속성에 올 수 있는 값이 달라진다. 
+
+//TO-DO : type 속성에 따라 expressioin 속성표
 
 ## 7. 스프링 컨테이너 추가 설명
+
 
