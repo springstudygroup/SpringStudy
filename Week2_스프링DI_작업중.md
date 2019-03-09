@@ -148,7 +148,6 @@ public class FilePrinter{
 : 스프링은 객체를 생성하고 각 객체를 연결해주는 조립기 역할을 한다.
 ```java
 // [코드-8] : 스프링 컨테이너로 객체 생성
-```java
 String configLocation = "classpath:applicationContext.xml";
 AbstractApplicationContext ctx = new GenericXmlApplicationContext(configLocation);
 Project project = ctx.getBean("sampleProject", Project.class);
@@ -156,7 +155,7 @@ project.build();
 ctx.close();
 ```
 
-여기서 GenericXmlApplicationContext가 조립기 기능을 구현한 클래ㅅ다. 조립기에서 생성할 객체가 무엇이고, 각 객체를 어떻게 연결하는지에 대한 정보는 XML 파일에 정의 되어 있다. GenericXmlApplicationContext 클래스는 이 XML 파일에 정의된 설정 정보를 읽어와 객체를 생성하고 각각의 객체를 연결한 뒤에 내부적으로 보관하는데, 이러한 생성된 객체를 보관하는 것을 스프링 객체 컨테이너(Object Container) 라고 부른다.
+여기서 GenericXmlApplicationContext가 조립기 기능을 구현한 클래스다. 조립기에서 생성할 객체가 무엇이고, 각 객체를 어떻게 연결하는지에 대한 정보는 XML 파일에 정의 되어 있다. GenericXmlApplicationContext 클래스는 이 XML 파일에 정의된 설정 정보를 읽어와 객체를 생성하고 각각의 객체를 연결한 뒤에 내부적으로 보관하는데, 이러한 생성된 객체를 보관하는 것을 스프링 객체 컨테이너(Object Container) 라고 부른다.
 
 
 ## 2. 스프링 컨테이너 종류
