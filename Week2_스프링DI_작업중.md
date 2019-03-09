@@ -148,6 +148,8 @@ public class FilePrinter{
 - 1.5 스프링은 객체를 생성하고 연결해주는 DI 컨테이너
 : 스프링은 객체를 생성하고 각 객체를 연결해주는 조립기 역할을 한다.
 ```java
+// [코드-8] : 스프링 컨테이너로 객체 생성
+```java
 String configLocation = "classpath:applicationContext.xml";
 AbstractApplicationContext ctx = new GenericXmlApplicationContext(configLocation);
 Project project = ctx.getBean("sampleProject", Project.class);
@@ -177,11 +179,131 @@ ctx.close();
 
 
 ## 4. 팩토리 방식의 스프링 빈 설정
-- 4.1 객체 생성을 위한 정적 메서드 설정 
+: XML 설정으로는 이 두가지 경우 즉, 정적 메서드를 이용해서 객체를 생성하는 경우와 객체 생성 과정이 다소 복잡한 경우를 처리할 수 없는데, 이런 경우를 위해 스프링은 다음과 같은 두 가지 방식의 객체 생성 방식을 제공한다.
+
+- 4.1 객체 생성을 위한 정적 메서드 설정
+```java
+// [코드-9] : 정적 메서드(instance)를 사용하여 객체 생성
+public abstract class ErpClientFactory {
+	public static ErpClientFactory instance() {
+		Properties props = new Properties();
+		props.setProperty("server", "localhost");
+		return instance(props);
+	}
+
+	public static ErpClientFactory instance(Properties props) {
+		return new DefaultErpClientFactory(props);
+	}
+
+	protected ErpClientFactory() {
+	}
+
+	public abstract ErpClient create();
+}
+
+```
+
+스프링은 기본적으로 객체를 생성할 때 생성자를 상요하기 때문에, 위와 같이 static 메서드를 이용해서 객체를 생성해야할 경우 <bean> 태그 안에 factory-method 속성을 추가로 설정한다.
+
+```xml
+<!-- [xml-1] : 정적 메서드를 사용하여 빈 객체 생성 -->
+<bean id="factory" class="net.madvirus.spring4.chap02.erp.ErpClientFactory"
+		factory-method="instance">
+		<constructor-arg> <!-- static 메서드의 파라미터로 전달 -->
+			<props>
+				<prop key="server">10.50.0.101</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+```
+
+[xml-1] 와 같이 factory-method 속성을 지정하면, 스프링은 ErpClientFactory 클래스의 생성자가 아닌 정적 메서드인 instance() 메서드를 이용해 빈 객체를 생성한다. 파라미터가 필요할 경우에는 <constructor-arg> 태그를 이용해서 필요한 값이나 빈 객체를 전달하면 된다.
+  
+- 4.2 FactoryBean 인터페이스를 이용한 객체 생성 처리 
 
 
 ## 5. 애노테이션을 이용한 객체 간 의존 자동 연결
+: 스프링은 개발자가 일일이 의존 정보를 설정하지 않아도(예륻들어, XML에서 <ref> 태그를 사용하지 않아도) 자동으로 스프링 빈 객체 간의 의존을 설정해주는 기능을 제공하고 있는데, 이 기능을 사용하면 스프링 코드 설정을 짧게 유지할 수 있게 된다. 의존 자동 설정을 위해서 자주 사용되는 애노테이션을 살펴 본다.
+  
+  - 5.1 애노테이션 기반 의존 자동 연결 위한 설정
+    + @Autowired : o.s.beans.factory.annotation.Autowried 애노테이션은 의존 관계를 자동으로 설정
+    + @Qualifiler : 두 개 이상의 동일한 빈 객체가 정의되어 생성될 경우 한정하여 연결해줄 객체를 생성하기 위한 설정
+    + @Inject : 
+    + @Resource : 이름을 기준으로 빈 객체를 자동으로 
+    
+    
+```java
+// [코드-10] : 애노테이션을 이용한 객체 간 의존 자동 연결     
+public class OrderService {
+  ...
+	@Autowired
+  private ErpClientFactory erpClientFactory;
+  
+  @Autowired
+	public void init(ErpClientFactory erpClientFactory) {
+    ...
+	}
+  ...
+}
+```
 
+```xml
+  <!-- [xml-2] : @Autowired 이용한 자동 연결 -->
+  <bean id="factory" class="net.madvirus.spring4.chap02.erp.ErpClientFactory"
+		factory-method="instance">
+		<constructor-arg>
+			<props>
+				<prop key="server">10.50.0.101</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+```
+ [코드-10]과 [xml-2]처럼 설정하고 @Autowired 사용하면 스프링은 자동으로 빈 객체를 생성하여 연결해 준다. @Autowired는 필드, 메서드, 생성자 등에서 사용 가능하다. @Autowired 속성중에 required 속성이 있는데 이것은 주입 객체가 필수인지를 설정하는 속성(기본으로는 true)이다. 이 속성 값을 false로하면 객체가 정의되지 않아 생성하지 못하더라도 익셉션이 발생하지 않으며, 객체의 값이 null일 수도 있을 경우에 사용(@Autowired(required=false))한다. 
+
+```java
+// [코드-10] : 애노테이션을 이용한 객체 간 의존 자동 연결     
+public class OrderService {
+  ...
+	@Autowired
+	public void setSearchClientFactory(@Qualifier("order") SearchClientFactory searchClientFactory) {
+		this.searchClientFactory = searchClientFactory;
+	}
+  ...
+}
+```
+```xml
+  <!-- [xml-3] : @Autowired 이용한 자동 연결 -->
+  <bean id="factory" class="net.madvirus.spring4.chap02.search.SearchClientFactoryBean">
+    <qualifier value="order"/>
+    ...
+	</bean>
+```
+ 
+@Qualifiler 애노테이션은 빈을 정의할 때 빈의 한정하여 사용하도록 설정하는 기능이다. XML 설정에서 <qualifier> 태그를 이용해 한정자를 지정하여 사용한다.
+  
+  
+
+```java
+// [코드-10] : 애노테이션을 이용한 객체 간 의존 자동 연결     
+public class OrderService {
+  ...
+	@Autowired
+	public void setSearchClientFactory(@Qualifier("order") SearchClientFactory searchClientFactory) {
+		this.searchClientFactory = searchClientFactory;
+	}
+  ...
+}
+```
+```xml
+  <!-- [xml-3] : @Autowired 이용한 자동 연결 -->
+  <bean id="factory" class="net.madvirus.spring4.chap02.search.SearchClientFactoryBean">
+    <qualifier value="order"/>
+    ...
+	</bean>
+```  
+ 
+
+    
 ## 6. 컴포넌트 스캔을 이용한 빈 자동 등록
 
 ## 7. 스프링 컨테이너 추가 설명
