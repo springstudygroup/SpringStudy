@@ -356,13 +356,13 @@ public class ProductService{
 [xml-6]에서 컴포넌트 스캔 시 포함할 클래스가 있다면 <context:include-filter>를 사용하고, 제외할 클래스가 있다면 <context:exclude-filter>를 사용한다.
 이 두 개의 태그는 type 속성에 따라 expressioin 속성에 올 수 있는 값이 달라진다. 
 
-//TO-DO : type 속성에 따라 expressioin 속성표
-|type 속성|설명|
---------------
-|annotation|클래스에 지정한 애노테이션이 적용됐는지 여부, expression 속성에는 "org.example.SomeAnnotation"와 같이 애노테이션 이름을 입력한다.|
-|assignable|클래스가 지정한 타입으로 할당 가능한지의 여부. expression 속성에는 "org.example.SomeClass"와 같이 타입 이름을 입력한다.|
-|regex|클래스 이름이 정규 표현식에 매칭되는지의 여부. expression 속성에는 "org\.example\.Deault.*"와 같이 정규 표현식을 입력한다.|
-|aspectj|클래스 이름이 AspectJ의 표현식에 매칭되는지의 여부. expression 속성에는 "org.example..*Service+"와 같이 AspectJ의 표현식을 입력한다.|
+[표 - 1 ] : type 속성에 따라 expressioin 속성표
+type 속성|설명
+--------|----
+annotation|클래스에 지정한 애노테이션이 적용됐는지 여부, expression 속성에는 "org.example.SomeAnnotation"와 같이 애노테이션 이름을 입력한다.
+assignable|클래스가 지정한 타입으로 할당 가능한지의 여부. expression 속성에는 "org.example.SomeClass"와 같이 타입 이름을 입력한다.
+regex|클래스 이름이 정규 표현식에 매칭되는지의 여부. expression 속성에는 "org\.example\.Deault.*"와 같이 정규 표현식을 입력한다.
+aspectj|클래스 이름이 AspectJ의 표현식에 매칭되는지의 여부. expression 속성에는 "org.example..*Service+"와 같이 AspectJ의 표현식을 입력한다.
 
 ## 7. 스프링 컨테이너 추가 설명
 : 지금까지는 ApplicationContext가 제공하는 메서드 중에 getBean() 메서드만 주로 사용했는데, 여기서는 getBean() 메서드를 포함해서 ApplicationContext가 제공하는 기능 및 스프링 컨테이넝 대한 추가적인 내용을 설명한다.
