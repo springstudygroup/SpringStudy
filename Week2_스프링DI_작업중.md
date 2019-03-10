@@ -9,7 +9,7 @@
 
 ## 1. DI(Dependency Injection)와 스프링
 : 객체 자체가 아니라 Framework 의해 객체의 의존성이 주입되는 설계 패턴을 말한다.
-객체가 어떤 의존성을 가지고 있으며, 어떡해 주입이 되는지 아래에 예제 코드를 보자.
+객체가 어떤 의존성을 가지고 있으며, 어떻게 주입이 되는지 아래에 예제 코드를 보자.
 
 - 1.1 DI(Dependency Injection) : 의존성 주입
 
@@ -57,7 +57,7 @@ public class FilePrinter{
   ```java
   // [코드-3] : 의존 객체를 외부로부터 파라미터로 전달 받아 사용하는 방법
   public static void main(String[] args){
-    Encryptor enc = enw Encryptor();  
+    Encryptor enc = new Encryptor();  
     FileEncryptor fileEncryptor = new FileEncryptor(enc);
   }
   ```
