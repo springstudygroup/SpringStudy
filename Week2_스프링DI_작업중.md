@@ -57,7 +57,7 @@ public class FilePrinter{
   ```java
   // [코드-3] : 의존 객체를 외부로부터 파라미터로 전달 받아 사용하는 방법
   public static void main(String[] args){
-    Encryptor enc = enw Encryptor();  
+    Encryptor enc = new Encryptor();  
     FileEncryptor fileEncryptor = new FileEncryptor(enc);
   }
   ```
