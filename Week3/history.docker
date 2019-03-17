@@ -1,4 +1,7 @@
-   12  sudo apt-get install python
+docker pull ubuntu
+docker run -p 2202:22 -p 8888:8080 -it ubuntu
+
+12  sudo apt-get install python
    15  python --version
    16  sudo apt-get install curl
    17  curl -O https://bootstrap.pypa.io/get-pip.py
