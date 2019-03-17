@@ -28,3 +28,17 @@
   121  cd build
   123  cd libs/
   125  java -jar hello0317-3-0.0.1-SNAPSHOT.jar 
+
+
+
+ssh 포트
+
+    3  apt-get update
+    4  apt-get install ssh
+    6  apt-get install openssh-server
+    
+    9  apt-get install vim
+   10  vim /etc/ssh/sshd_config
+   
+   12  service ssh restart
+   13  passwd
