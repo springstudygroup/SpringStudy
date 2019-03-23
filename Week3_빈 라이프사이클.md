@@ -135,10 +135,13 @@ XML설정을 사용하여 다음과 같이 init-method 속성과 destroy-method 
   초기화와 소멸 과정에서 사용될 메서드는 파라미터를 가져서는 안 된다.
   
 - 1.5 ApplicationContextAware 인터페이스와 BeanNameAware 인터페이스
+
 빈으로 사용될 객체에서 스프링 컨테이너에 접근하거나 빈 객체에서 로그를 기록할 때 빈의 이름을 남기고 싶을 경우
 o.s.context.ApplicationContextAware, o.s.beans.factory.BeanNameAware 인터페이스를 사용하면 된다.
+
 -o.s.context.ApplicationContextAware : 이 인터페이스를 상속받은 빈 객체는 초기화 과정에서 컨테이너(AppicationContext)를 전달받는다.
 -o.c.beans.factory.BeanNameAware : 이 인터페이스를 상속받은 빈 객체는 초기화 과정에서 빈 이름을 전달받는다.
+
 ```java
 // [코드-8] : ApplicationContext 인터페이스의 정의
 public interface ApplicationContextAware extends Aware {
