@@ -219,7 +219,9 @@ public class WorkRunner implements BeanNameAware {
 
 ## 2. 빈 객체 범위(scope)
 : 스프링의 빈은 범위(scope)를 갖는데 주요 범위에는 다음의 두 가지가 있다.
+
 -싱글톤(singleton) 범위
+
 -프로토타입(prototype) 범위
 
 이 범위는 빈 객체의 생명주기와 관련된다.
