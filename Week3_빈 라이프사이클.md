@@ -98,6 +98,7 @@ destroy() 메서드를 호출해서 소멸을 진행한다.
   ```
   
   ```java
+  
   // [코드-5] : @PostConstruct와 @PreDestroy를 가진 빈 설정
 <beans xmlns="http://www.springframework.org/schema/beans"
  xmlns:context="http://www.springframework.org/schema/context"
@@ -129,6 +130,7 @@ XML설정을 사용하여 다음과 같이 init-method 속성과 destroy-method 
   public ConnPool3 connPool3() {
     return new ConnPool3();
   }
+  
   ```
   초기화와 소멸 과정에서 사용될 메서드는 파라미터를 가져서는 안 된다.
   
