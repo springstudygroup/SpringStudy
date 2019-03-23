@@ -18,7 +18,7 @@
 - 1.2 InitializingBean 인터페이스와 DisposableBean 인터페이스
 스프링은 객체의 초기화 및 소멸 과정을 위해 다음의 두 인터페이스를 제공하고 있다.
 
--o.s.beans.factory.IniializingBean : 빈의 초기화 과정에서 실행될 메서드를 정의
+-o.s.beans.factory.InitializingBean : 빈의 초기화 과정에서 실행될 메서드를 정의
 
 -o.s.beans.factory.DisableBean : 빈의 소멸 과정에서 실행될 메서드를 정의
 
