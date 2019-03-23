@@ -12,23 +12,8 @@
 빈 객체의 초기화뿐만 아니라 빈 객체의 소멸 과정 등 빈의 라이프사이클을 관리할 수 있도록 스프링 인터페이스 설정방법을 알아보자.
 
 - 1.1 빈 라이프 사이클 개요
-
-```java
-// [코드-1] : FilePrinter 객체는 BufferedReader 객체를 의존한다.
-public class FilePrinter{
-  public void print(String filePath) throws IOException{
-   // 의존하는 타입을 로컬 변수(br 변수)로 정의
-    try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
-      String line = null;
-      while((line = br.readLine()) != null){
-        System.out.println(line);
-      }
-    }
-  }
-}
-```
-[코드-1] 예제를 보면 FilePrinter 객체가 print() 메서드를 사용하기 위해서 BufferedReader 객체를 생성하여 사용하는 것을 알 수 있다.
-이렇게 기능을 실행하기 위해서 다른 객체(클래스)를 필요로 할 때 이를 의존(dependency)한다고 본다.
+빈의 라이프 사이클은 [객체 생성/프로퍼티 설정 > 초기화 > 사용 > 소멸]의 과정을 거친다. 컨테이너는 빈 객체를 설정하고 프로퍼티를 설정한 뒤에 빈의 초기화를 진행하며, 컨테이너를 종료하는 과정에서 생성한 빈 객체의 소멸 과정을 진행한다.
+빈의 초기화와 소멸과정은 각각 세가지가 존재하며, 각 방식이 쌍을 이루며 함꼐 사용되곤 한다.
 
 - 1.2 InitializingBean 인터페이스와 DisposableBean 인터페이스
 스프링은 객체의 초기화 및 소멸 과정을 위해 다음의 두 인터페이스를 제공하고 있다.
