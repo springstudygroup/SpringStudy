@@ -159,13 +159,6 @@ ApplicationContext 인터페이스를 상속받아 구현한 클래스는 setApp
 
 ```java
 // [코드-9] : ApplicationContextAware 인터페이스 구현 예시
-public interface ApplicationContextAware extends Aware {
-  void setApplicationContext(ApplicationContext applicationContext)
-  throws BeansException;
-}
-```
-```java
-// [코드-10] : ApplicationContext 인터페이스의 정의
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
