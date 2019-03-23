@@ -107,6 +107,7 @@ destroy() 메서드를 호출해서 소멸을 진행한다.
   http://www.springframework.org/schema/context/spring-context.xsd">
   
   <context:annotation-config />
+  
   ```
   AnnotationConfigApplicationContext를 사용할 경우 애노테이션과 관련된 기능을 모두 활성시키므로 별도의 설정을 추가할 필요는 없다.
   초기화와 소멸 과정에서 사용될 메서드는 파라미터를 가져서는 안 된다.
