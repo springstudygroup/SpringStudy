@@ -140,6 +140,7 @@ XML설정을 사용하여 다음과 같이 init-method 속성과 destroy-method 
 o.s.context.ApplicationContextAware, o.s.beans.factory.BeanNameAware 인터페이스를 사용하면 된다.
 
 -o.s.context.ApplicationContextAware : 이 인터페이스를 상속받은 빈 객체는 초기화 과정에서 컨테이너(AppicationContext)를 전달받는다.
+
 -o.c.beans.factory.BeanNameAware : 이 인터페이스를 상속받은 빈 객체는 초기화 과정에서 빈 이름을 전달받는다.
 
 ```java
