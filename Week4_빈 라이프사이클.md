@@ -14,7 +14,7 @@
 - 1.1 빈 라이프 사이클 개요
 
 빈의 라이프 사이클은 [객체 생성/프로퍼티 설정 > 초기화 > 사용 > 소멸]의 과정을 거친다. 컨테이너는 빈 객체를 설정하고 프로퍼티를 설정한 뒤에 빈의 초기화를 진행하며, 컨테이너를 종료하는 과정에서 생성한 빈 객체의 소멸 과정을 진행한다.
-빈의 초기화와 소멸과정은 각각 세가지가 존재하며, 각 방식이 쌍을 이루며 함꼐 사용되곤 한다.
+빈의 초기화와 소멸과정은 각각 세가지가 존재하며, 각 방식이 쌍을 이루며 함께 사용되곤 한다.
 
 - 1.2 InitializingBean 인터페이스와 DisposableBean 인터페이스
 
@@ -22,7 +22,7 @@
 
 -o.s.beans.factory.InitializingBean : 빈의 초기화 과정에서 실행될 메서드를 정의
 
--o.s.beans.factory.DisableBean : 빈의 소멸 과정에서 실행될 메서드를 정의
+-o.s.beans.factory.DisposableBean : 빈의 소멸 과정에서 실행될 메서드를 정의
 
 이 두 인터페이스는 각각 다음과 같이 정의되어 있다.
   
@@ -69,7 +69,7 @@ destroy() 메서드를 호출해서 소멸을 진행한다.
  ```java
   // [코드-3] : 빈 설정 
   <!-- 스프링 컨테이너가 afterPropertiesSet() 메서드를 실행해서 초기화를 진행하고, 컨테이너를 종료할 때 빈의 destroy() 메서드를
-   실행헤서 소멸을 진행한다. -->
+   실행서 소멸을 진행한다. -->
    <bean id="connPool" class="new.madvirus.spring4.chap03.ConnPool">
    </bean>
   ```
@@ -211,7 +211,7 @@ public class WorkRunner implements BeanNameAware {
   }
 }
 ```
-주로 같은 타입을 가진 빈 객체들이 두 개 이상 존재하고, 각 빈을 이르으로 구분해야 할 떄, BeanNameAware 인터페이스를 사용한다.
+주로 같은 타입을 가진 빈 객체들이 두 개 이상 존재하고, 각 빈을 이르으로 구분해야 할 때, BeanNameAware 인터페이스를 사용한다.
 
 ## 2. 빈 객체 범위(scope)
 : 스프링의 빈은 범위(scope)를 갖는데 주요 범위에는 다음의 두 가지가 있다.
