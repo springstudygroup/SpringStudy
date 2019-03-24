@@ -223,7 +223,7 @@ public class WorkRunner implements BeanNameAware {
 이 범위는 빈 객체의 생명주기와 관련된다.
 
 - 2.1 싱글톤 
-: 스츠링은 기본적으로 빈 객체를 한 번만 생성한다. getBean() 메서드를 두 번 이상 호출해서 빈을 구하면 매번 동일한 빈 객체를 리턴한다.
+: 스링은 기본적으로 빈 객체를 한 번만 생성한다. getBean() 메서드를 두 번 이상 호출해서 빈을 구하면 매번 동일한 빈 객체를 리턴한다.
 ```java
 // [코드-13] : 빈 객체 설정 xml
 <bean id="Pool1" class="net.madvirus.chap03.ConnPool1">
