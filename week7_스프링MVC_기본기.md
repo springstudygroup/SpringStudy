@@ -1,13 +1,19 @@
 
 Chapter 07 스프링 MVC : 기본기 
 
-01 스프링 MVC 일단 해보기 
-02 기본 흐름과 주요 컴포넌트 
-03 스프링 MVC 설정 기초 
-04 컨트롤러 구현 
-05 커맨드 객체 값 검증과 에러 메시지 
-06 요청 파라미터의 값 변환 처리 
-07 HTTP 세션 사용하기 
+~~01 스프링 MVC 일단 해보기~~
+
+~~02 기본 흐름과 주요 컴포넌트~~
+
+~~03 스프링 MVC 설정 기초~~
+
+~~04 컨트롤러 구현~~
+
+~~05 커맨드 객체 값 검증과 에러 메시지~~
+
+~~06 요청 파라미터의 값 변환 처리~~
+
+~~07 HTTP 세션 사용하기~~
 
 ## Spring - MVC Framework Overview
 
@@ -93,3 +99,7 @@ If you do not want to go with the default filename as [servlet-name]-servlet.xml
 ```
 
 https://www.tutorialspoint.com/springmvc/springmvc_quick_guide.htm
+
+servlet-mapping url-mapping을 '*.jsp'에서 '/*'로 바꾸고 또 '/'로 바꾼 이유
+
+https://lng1982.tistory.com/97
