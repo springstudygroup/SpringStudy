@@ -445,6 +445,7 @@ child.refresh();
 
 ## 참고내용
 - 서적 : 웹 개발자를 위한 Spring 4.0 프로그래밍 (최범균 저자)
+- 참고예제소스 : https://github.com/madvirus/spring4
 - 블로그 : https://gmlwjd9405.github.io/2018/11/09/dependency-injection.html
 
 
