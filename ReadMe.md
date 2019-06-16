@@ -6,7 +6,7 @@
 
 박줄기: 
 
-오민호:
+오민호: https://github.com/5minho/music-scraper
 
 정석호:  https://github.com/CreatiCoding/creati-toy-box
 
