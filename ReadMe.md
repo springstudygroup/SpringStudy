@@ -4,7 +4,7 @@
 
 박유진: 
 
-박줄기: 
+박줄기: https://github.com/SSUU/SpringProjectTraviTalk
 
 오민호:
 
