@@ -2,9 +2,9 @@
 
 # 리스트
 
-박유진: 
+박유진: https://github.com/SSUU/SpringProjectTraviTalk
 
-박줄기: https://github.com/SSUU/SpringProjectTraviTalk
+박줄기: 
 
 오민호:
 
