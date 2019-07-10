@@ -6,7 +6,9 @@
 
 박줄기: 
 
-오민호: https://github.com/5minho/music-scraper
+오민호:
+* backend : https://github.com/5minho/i-my-me-mine
+* front : https://github.com/5minho/you-your-you-yours
 
 정석호:  https://github.com/CreatiCoding/creati-toy-box
 
